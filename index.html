@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Course Registration System</title>
+
+
+<script>
+
+// simulate session check
+document.addEventListener("DOMContentLoaded", function(){
+
+    let loggedIn = localStorage.getItem("loggedin");
+
+    if(loggedIn === "true"){
+        window.location.href = "dashboard.html";
+    }
+
+});
+
+</script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Welcome to Student Course Registration System</h1>
+
+<p>
+Manage your course registrations easily with our simple and efficient system.
+Please login or register to get started.
+</p>
+
+<a href="login.html" class="btn">Login</a>
+<a href="register.html" class="btn btn-secondary">Register</a>
+
+</div>
+
+</body>
+</html>

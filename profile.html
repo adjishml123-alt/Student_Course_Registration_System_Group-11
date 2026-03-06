@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Profile</title>
+
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Student Profile</h1>
+
+<div class="profile-section">
+
+<img id="profileImage" class="profile-image" src="uploads/profile1.jpg">
+
+</div>
+
+<div class="info-group">
+<label>Student ID</label>
+<p id="studentId"></p>
+</div>
+
+<div class="info-group">
+<label>Full Name</label>
+<p id="studentName"></p>
+</div>
+
+<div class="info-group">
+<label>Email</label>
+<p id="studentEmail"></p>
+</div>
+
+<div class="courses-section">
+<h2>Registered Courses</h2>
+<ul id="courseList"></ul>
+</div>
+
+<div class="upload-section">
+
+<h2>Upload Passport Photo</h2>
+
+<input type="file" id="passportUpload" accept="image/png, image/jpeg">
+
+</div>
+
+<div class="links">
+
+<a href="dashboard.html" class="btn">Back to Dashboard</a>
+
+<a href="#" onclick="logout()" class="btn btn-danger">Logout</a>
+
+</div>
+
+</div>
+
+<script>
+
+// check login
+if(localStorage.getItem("loggedin") !== "true"){
+window.location.href = "index.html";
+}
+
+// load student info
+document.getElementById("studentId").innerText = localStorage.getItem("student_id");
+document.getElementById("studentName").innerText = localStorage.getItem("student_name");
+document.getElementById("studentEmail").innerText = localStorage.getItem("student_email");
+
+// load courses
+let courses = JSON.parse(localStorage.getItem("registered_courses")) || [];
+let courseList = document.getElementById("courseList");
+
+courses.forEach(course=>{
+let li = document.createElement("li");
+li.innerText = course;
+courseList.appendChild(li);
+});
+
+// upload image preview
+document.getElementById("passportUpload").addEventListener("change",function(){
+
+let file = this.files[0];
+
+let reader = new FileReader();
+
+reader.onload = function(e){
+
+document.getElementById("profileImage").src = e.target.result;
+
+localStorage.setItem("passport", e.target.result);
+
+}
+
+reader.readAsDataURL(file);
+
+});
+
+// load saved passport
+let savedPassport = localStorage.getItem("passport");
+
+if(savedPassport){
+document.getElementById("profileImage").src = savedPassport;
+}
+
+// logout
+function logout(){
+localStorage.clear();
+window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>

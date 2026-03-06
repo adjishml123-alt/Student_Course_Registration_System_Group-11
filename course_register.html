@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Course Registration - Student Course Registration System</title>
+
+
+<script>
+
+const availableCourses = [
+'Web Development',
+'Database System',
+'Advance Java',
+'Human Computer Interaction',
+'System Analysis',
+'Discrete Mathematics',
+'Operating Research'
+];
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    // SESSION CHECK
+    if(localStorage.getItem("loggedin") !== "true"){
+        window.location.href = "index.html";
+        return;
+    }
+
+    let studentName = localStorage.getItem("student_name") || "Student";
+    document.getElementById("studentName").innerText = studentName;
+
+    // load current courses
+    let registered = JSON.parse(localStorage.getItem("registered_courses") || "[]");
+
+    let list = document.getElementById("currentCourses");
+
+    if(registered.length > 0){
+        registered.forEach(course=>{
+            let li=document.createElement("li");
+            li.textContent=course;
+            list.appendChild(li);
+        });
+    }else{
+        document.getElementById("noCourses").style.display="block";
+    }
+
+});
+
+function registerCourses(){
+
+    let checkboxes=document.querySelectorAll("input[name='courses']:checked");
+
+    if(checkboxes.length===0){
+        showMessage("Please select at least one course.",false);
+        return;
+    }
+
+    let selected=[];
+    checkboxes.forEach(cb=>{
+        selected.push(cb.value);
+    });
+
+    let existing=JSON.parse(localStorage.getItem("registered_courses") || "[]");
+
+    let merged=[...new Set([...existing,...selected])];
+
+    localStorage.setItem("registered_courses",JSON.stringify(merged));
+
+    showMessage("Courses registered successfully!",true);
+
+}
+
+function showMessage(msg,success){
+
+    let box=document.getElementById("messageBox");
+    box.innerText=msg;
+
+    box.className="message " + (success ? "success" : "error");
+
+    box.style.display="block";
+
+}
+
+function logout(){
+    localStorage.removeItem("loggedin");
+    window.location.href="index.html";
+}
+
+</script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Course Registration</h1>
+
+<p class="subtitle">Welcome, <span id="studentName"></span>! Select courses to register.</p>
+
+<div id="messageBox" class="message" style="display:none;"></div>
+
+<div>
+<strong>Currently Registered:</strong>
+
+<ul id="currentCourses"></ul>
+
+<p id="noCourses" style="display:none;">No courses registered yet.</p>
+
+</div>
+
+<form onsubmit="event.preventDefault(); registerCourses();">
+
+<div class="courses-grid">
+
+<label class="checkbox-item"><input type="checkbox" name="courses" value="Web Development"> Web Development</label>
+
+<label class="checkbox-item"><input type="checkbox" name="courses" value="Database System"> Database System</label>
+
+<label class="checkbox-item"><input type="checkbox" name="courses" value="Advance Java"> Advance Java</label>
+
+<label class="checkbox-item"><input type="checkbox" name="courses" value="Human Computer Interaction"> Human Computer Interaction</label>
+
+<label class="checkbox-item"><input type="checkbox" name="courses" value="System Analysis"> System Analysis</label>
+
+<label class="checkbox-item"><input type="checkbox" name="courses" value="Discrete Mathematics"> Discrete Mathematics</label>
+
+<label class="checkbox-item"><input type="checkbox" name="courses" value="Operating Research"> Operating Research</label>
+
+</div>
+
+<button type="submit" class="btn">Register Selected Courses</button>
+
+</form>
+
+<div class="links">
+
+<a href="dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+
+<a href="profile.html" class="btn">View Profile</a>
+
+<a href="#" onclick="logout()" class="btn btn-danger">Logout</a>
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard - Student Course Registration System</title>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    // SESSION CHECK
+    if(localStorage.getItem("loggedin") !== "true"){
+        window.location.href = "index.html";
+        return;
+    }
+
+    // Get student data
+    let studentName = localStorage.getItem("student_name") || "Student";
+    let studentId = localStorage.getItem("student_id") || "";
+    let courses = JSON.parse(localStorage.getItem("registered_courses") || "[]");
+
+    // Display name and ID
+    document.getElementById("studentName").innerText = studentName;
+    document.getElementById("studentId").innerText = studentId;
+
+    let courseList = document.getElementById("courseList");
+    let noCourses = document.getElementById("noCourses");
+
+    if(courses.length > 0){
+
+        noCourses.style.display = "none";
+
+        courses.forEach(course=>{
+            let li = document.createElement("li");
+            li.textContent = course;
+            courseList.appendChild(li);
+        });
+
+    }else{
+
+        courseList.style.display = "none";
+
+    }
+
+});
+
+// Logout function
+function logout(){
+    localStorage.removeItem("loggedin");
+    window.location.href = "index.html";
+}
+
+</script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Welcome, <span id="studentName"></span>!</h1>
+
+<p class="welcome-text">
+Student ID: <span id="studentId"></span>
+</p>
+
+<div class="courses-section">
+
+<h2>Your Registered Courses</h2>
+
+<ul id="courseList" class="course-list"></ul>
+
+<p id="noCourses" class="no-courses">
+No courses registered yet. Click below to register for courses.
+</p>
+
+</div>
+
+<div class="links">
+
+<a href="course_register.html" class="btn btn-success">Register Courses</a>
+
+<a href="profile.html" class="btn">View Profile</a>
+
+<a href="#" onclick="logout()" class="btn btn-danger">Logout</a>
+
+</div>
+
+</div>
+
+</body>
+</html>
